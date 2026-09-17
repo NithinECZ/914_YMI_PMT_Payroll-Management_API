@@ -1,0 +1,16 @@
+.vs/
+bin/
+obj/
+Debug/
+Release/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Secrets / local configuration
+.env
+appsettings.Development.json
+
+# Visual Studio
+.vscode/

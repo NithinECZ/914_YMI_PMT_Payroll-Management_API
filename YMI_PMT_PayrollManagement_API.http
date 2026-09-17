@@ -1,0 +1,6 @@
+@YMI_PMT_PayrollManagement_API_HostAddress = http://localhost:5055
+
+GET {{YMI_PMT_PayrollManagement_API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

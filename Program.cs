@@ -21,15 +21,17 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     ));
 
 // TIER 3: Repository
+// TIER 3: Repository
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserMasterRepository, UserMasterRepository>();
 builder.Services.AddScoped<IMailConfigRepository, MailConfigRepository>();
 builder.Services.AddScoped<IVendorMasterRepository, VendorMasterRepository>();
 builder.Services.AddScoped<IEmployeeMasterRepository, EmployeeMasterRepository>();
-// 👇 Calendar Master Repository
 builder.Services.AddScoped<ICalendarMasterRepository, CalendarMasterRepository>();
-// 👇 Salary Structure Repository
 builder.Services.AddScoped<ISalaryStructureRepository, SalaryStructureRepository>();
+builder.Services.AddScoped<ISalaryFormulaRepository, SalaryFormulaRepository>();   // ← only once
+builder.Services.AddScoped<IPayrollEmployeeRepository, PayrollEmployeeRepository>();
+
 
 // TIER 2: Service
 builder.Services.AddScoped<IAuthService, AuthService>();
@@ -37,13 +39,10 @@ builder.Services.AddScoped<IUserMasterService, UserMasterService>();
 builder.Services.AddScoped<IMailConfigService, MailConfigService>();
 builder.Services.AddScoped<IVendorMasterService, VendorMasterService>();
 builder.Services.AddScoped<IEmployeeMasterService, EmployeeMasterService>();
-// 👇 Calendar Master Service
 builder.Services.AddScoped<ICalendarMasterService, CalendarMasterService>();
-// 👇 FIX: this line was missing before — ISalaryStructionService was never
-// registered, so any request into SalaryStructureController threw a DI
-// resolution error, which showed up as "Failed to load salary structures"
-// and "Save Failed" on the frontend.
 builder.Services.AddScoped<ISalaryStructureService, SalaryStructureService>();
+builder.Services.AddScoped<ISalaryFormulaService, SalaryFormulaService>();       // ← THIS WAS MISSING
+builder.Services.AddScoped<IPayrollEmployeeService, PayrollEmployeeService>();
 
 builder.Services.AddCors(options =>
 {

@@ -49,23 +49,60 @@ namespace YMI_PMT_PayrollManagement_API.Services
 
         public async Task<(bool Success, string Message)> UpdateAsync(int id, CreateEmployeeMasterDTO dto)
         {
+            // EmpId is intentionally NOT updated (locked on UI)
             var entity = new EmployeeMaster
             {
                 Id = id,
+                EmpNm = dto.EmpNm,
+                Gender = dto.Gender,
                 VendorId = dto.VendorId,
                 Vendor = dto.Vendor,
-                Status = dto.Status,
+                EmpCat = dto.EmpCat,
+                DeptNm = dto.DeptNm,
+                SubDiv = dto.SubDiv,
+                SkillCat = dto.SkillCat,
+                DeptCode = dto.DeptCode,
+                SecCode = dto.SecCode,
+                CtgCode = dto.CtgCode,
+                GrdCode = dto.GrdCode,
+                Doj = dto.Doj,
+                Dol = dto.Dol,
+                EmailId = dto.EmailId,
+                PhoneNo = dto.PhoneNo,
+                UanNo = dto.UanNo,
+                PfNo = dto.PfNo,
+                EsiNo = dto.EsiNo,
+                PermAdd1 = dto.PermAdd1,
+                PermAdd2 = dto.PermAdd2,
+                PermStr = dto.PermStr,
+                PermCity = dto.PermCity,
+                PermPIN = dto.PermPIN,
+                PermState = dto.PermState,
+                PermCntry = dto.PermCntry,
+                Marital = dto.Marital,
+                Dob = dto.Dob,
+                AadharNo = dto.AadharNo,
+                PanNo = dto.PanNo,
+                Qualify = dto.Qualify,
+                ExpYrs = dto.ExpYrs,
+                FatherNm = dto.FatherNm,
+                Nation = dto.Nation,
+                Status = string.IsNullOrWhiteSpace(dto.Status) ? "1" : dto.Status,
                 MdfdBy = string.IsNullOrWhiteSpace(dto.ModifiedBy) ? "SYSTEM" : dto.ModifiedBy
             };
 
             var result = await _repository.UpdateAsync(entity);
-            return result ? (true, "Employee Updated Successfully") : (false, "Employee not found");
+            return result
+                ? (true, "Employee Updated Successfully")
+                : (false, "Employee not found");
         }
 
         public async Task<(bool Success, string Message)> DeleteAsync(int id)
         {
             var result = await _repository.DeleteAsync(id);
-            return result ? (true, "Deleted Successfully") : (false, "Employee not found");
+            return result
+                ? (true, "Deleted Successfully")
+                : (false, "Employee not found");
         }
 
         private static EmployeeMasterDTO MapToDto(EmployeeMaster e) => new EmployeeMasterDTO

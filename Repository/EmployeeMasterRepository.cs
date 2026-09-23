@@ -31,21 +31,17 @@ namespace YMI_PMT_PayrollManagement_API.Repository
                 .FirstOrDefaultAsync(e => e.Id == id);
         }
 
-        // Used for Genders / MaritalStatus SPs — single column result
         private async Task<List<string>> GetDistinctViaStoredProcAsync(string procName)
         {
             var result = new List<string>();
             var connection = _context.Database.GetDbConnection();
-
             var wasClosed = connection.State != ConnectionState.Open;
             if (wasClosed) await connection.OpenAsync();
-
             try
             {
                 using var command = connection.CreateCommand();
                 command.CommandText = procName;
                 command.CommandType = CommandType.StoredProcedure;
-
                 using var reader = await command.ExecuteReaderAsync();
                 while (await reader.ReadAsync())
                 {
@@ -57,26 +53,20 @@ namespace YMI_PMT_PayrollManagement_API.Repository
             {
                 if (wasClosed) await connection.CloseAsync();
             }
-
             return result;
         }
 
-        // NEW — used for Departments / EmpCategories / SubDivisions / SkillCategories SPs
-        // These SPs return TWO columns: Code, Name — read both in a single fast round-trip
         private async Task<List<CodeNameDTO>> GetDistinctCodeNameViaStoredProcAsync(string procName)
         {
             var result = new List<CodeNameDTO>();
             var connection = _context.Database.GetDbConnection();
-
             var wasClosed = connection.State != ConnectionState.Open;
             if (wasClosed) await connection.OpenAsync();
-
             try
             {
                 using var command = connection.CreateCommand();
                 command.CommandText = procName;
                 command.CommandType = CommandType.StoredProcedure;
-
                 using var reader = await command.ExecuteReaderAsync();
                 while (await reader.ReadAsync())
                 {
@@ -91,7 +81,6 @@ namespace YMI_PMT_PayrollManagement_API.Repository
             {
                 if (wasClosed) await connection.CloseAsync();
             }
-
             return result;
         }
 
@@ -117,16 +106,13 @@ namespace YMI_PMT_PayrollManagement_API.Repository
         {
             var result = new List<VendorDropdownDTO>();
             var connection = _context.Database.GetDbConnection();
-
             var wasClosed = connection.State != ConnectionState.Open;
             if (wasClosed) await connection.OpenAsync();
-
             try
             {
                 using var command = connection.CreateCommand();
                 command.CommandText = "sp_GetVendorsForDropdown";
                 command.CommandType = CommandType.StoredProcedure;
-
                 using var reader = await command.ExecuteReaderAsync();
                 while (await reader.ReadAsync())
                 {
@@ -141,7 +127,6 @@ namespace YMI_PMT_PayrollManagement_API.Repository
             {
                 if (wasClosed) await connection.CloseAsync();
             }
-
             return result;
         }
 
@@ -150,8 +135,41 @@ namespace YMI_PMT_PayrollManagement_API.Repository
             var existing = await _context.EmployeeMasters.FirstOrDefaultAsync(e => e.Id == employee.Id);
             if (existing == null) return false;
 
+            // EmpId is NOT updated — locked field
+            existing.EmpNm = employee.EmpNm;
+            existing.Gender = employee.Gender;
             existing.VendorId = employee.VendorId;
             existing.Vendor = employee.Vendor;
+            existing.EmpCat = employee.EmpCat;
+            existing.DeptNm = employee.DeptNm;
+            existing.SubDiv = employee.SubDiv;
+            existing.SkillCat = employee.SkillCat;
+            existing.DeptCode = employee.DeptCode;
+            existing.SecCode = employee.SecCode;
+            existing.CtgCode = employee.CtgCode;
+            existing.GrdCode = employee.GrdCode;
+            existing.Doj = employee.Doj;
+            existing.Dol = employee.Dol;
+            existing.EmailId = employee.EmailId;
+            existing.PhoneNo = employee.PhoneNo;
+            existing.UanNo = employee.UanNo;
+            existing.PfNo = employee.PfNo;
+            existing.EsiNo = employee.EsiNo;
+            existing.PermAdd1 = employee.PermAdd1;
+            existing.PermAdd2 = employee.PermAdd2;
+            existing.PermStr = employee.PermStr;
+            existing.PermCity = employee.PermCity;
+            existing.PermPIN = employee.PermPIN;
+            existing.PermState = employee.PermState;
+            existing.PermCntry = employee.PermCntry;
+            existing.Marital = employee.Marital;
+            existing.Dob = employee.Dob;
+            existing.AadharNo = employee.AadharNo;
+            existing.PanNo = employee.PanNo;
+            existing.Qualify = employee.Qualify;
+            existing.ExpYrs = employee.ExpYrs;
+            existing.FatherNm = employee.FatherNm;
+            existing.Nation = employee.Nation;
             existing.Status = employee.Status ?? existing.Status;
             existing.MdfdOn = DateTime.Now;
             existing.MdfdBy = employee.MdfdBy ?? "SYSTEM";
@@ -164,7 +182,6 @@ namespace YMI_PMT_PayrollManagement_API.Repository
         {
             var existing = await _context.EmployeeMasters.FirstOrDefaultAsync(e => e.Id == id);
             if (existing == null) return false;
-
             _context.EmployeeMasters.Remove(existing);
             await _context.SaveChangesAsync();
             return true;

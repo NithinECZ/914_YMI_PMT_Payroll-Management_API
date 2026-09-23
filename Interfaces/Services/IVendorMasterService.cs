@@ -10,5 +10,6 @@ namespace YMI_PMT_PayrollManagement_API.Interfaces.Services
         Task<(bool Success, string Message, int Id)> CreateAsync(CreateVendorMasterDTO dto);
         Task<(bool Success, string Message)> UpdateAsync(int id, CreateVendorMasterDTO dto);
         Task<(bool Success, string Message)> DeleteAsync(int id);
+
     }
 }

@@ -54,9 +54,6 @@ namespace YMI_PMT_PayrollManagement_API.Services
             if (string.IsNullOrWhiteSpace(dto.VendorContact))
                 return (false, "Vendor Contact is required", 0);
 
-            if (string.IsNullOrWhiteSpace(dto.VendorLicense))
-                return (false, "License Number is required", 0);
-
             var entity = new VendorMaster
             {
                 VendorId = dto.VendorId.Trim(),
@@ -68,7 +65,7 @@ namespace YMI_PMT_PayrollManagement_API.Services
                 VendorAddress = string.IsNullOrWhiteSpace(dto.VendorAddress) ? null : dto.VendorAddress.Trim(),
                 VendorESIC = string.IsNullOrWhiteSpace(dto.VendorESIC) ? null : dto.VendorESIC.Trim(),
                 VendorPF = string.IsNullOrWhiteSpace(dto.VendorPF) ? null : dto.VendorPF.Trim(),
-                VendorLicense = dto.VendorLicense.Trim(),
+                VendorLicense = string.IsNullOrWhiteSpace(dto.VendorLicense) ? null : dto.VendorLicense.Trim(),
                 Status = dto.IsActive ? "1" : "0",
                 CreatedOn = DateTime.Now,
                 CreatedBy = string.IsNullOrWhiteSpace(dto.ModifiedBy) ? "SYSTEM" : dto.ModifiedBy,
@@ -95,7 +92,7 @@ namespace YMI_PMT_PayrollManagement_API.Services
                 VendorAddress = string.IsNullOrWhiteSpace(dto.VendorAddress) ? null : dto.VendorAddress.Trim(),
                 VendorESIC = string.IsNullOrWhiteSpace(dto.VendorESIC) ? null : dto.VendorESIC.Trim(),
                 VendorPF = string.IsNullOrWhiteSpace(dto.VendorPF) ? null : dto.VendorPF.Trim(),
-                VendorLicense = dto.VendorLicense.Trim(),
+                VendorLicense = string.IsNullOrWhiteSpace(dto.VendorLicense) ? null : dto.VendorLicense.Trim(),
                 Status = dto.IsActive ? "1" : "0",
                 ModifiedBy = string.IsNullOrWhiteSpace(dto.ModifiedBy) ? "SYSTEM" : dto.ModifiedBy,
             };

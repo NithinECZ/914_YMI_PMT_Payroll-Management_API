@@ -63,7 +63,7 @@ namespace YMI_PMT_PayrollManagement_API.Repository
             existing.VendorAddress = vendor.VendorAddress;
             existing.VendorESIC = vendor.VendorESIC;
             existing.VendorPF = vendor.VendorPF;
-            existing.VendorLicense = vendor.VendorLicense ?? existing.VendorLicense;
+            existing.VendorLicense = vendor.VendorLicense; // now allowed to be set to null
             existing.Status = vendor.Status ?? "1";
             existing.ModifiedOn = DateTime.Now;
             existing.ModifiedBy = vendor.ModifiedBy ?? "SYSTEM";

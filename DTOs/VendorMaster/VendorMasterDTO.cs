@@ -13,7 +13,7 @@
         public string? VendorAddress { get; set; }
         public string? VendorESIC { get; set; }
         public string? VendorPF { get; set; }
-        public string VendorLicense { get; set; } = string.Empty;
+        public string? VendorLicense { get; set; }
         public string Status { get; set; } = string.Empty;
     }
 
@@ -29,7 +29,7 @@
         public string? VendorAddress { get; set; }
         public string? VendorESIC { get; set; }
         public string? VendorPF { get; set; }
-        public string VendorLicense { get; set; } = string.Empty;
+        public string? VendorLicense { get; set; }
         public string ModifiedBy { get; set; } = "SYSTEM";
         public bool IsActive { get; set; } = true;
     }

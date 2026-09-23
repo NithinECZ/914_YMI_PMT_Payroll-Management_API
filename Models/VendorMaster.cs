@@ -38,7 +38,7 @@ namespace YMI_PMT_PayrollManagement_API.Models
         public string? VendorPF { get; set; }
 
         [Column("Vnd_Lc")]
-        public string VendorLicense { get; set; } = string.Empty;
+        public string? VendorLicense { get; set; }
 
         [Column("Status")]
         public string? Status { get; set; }

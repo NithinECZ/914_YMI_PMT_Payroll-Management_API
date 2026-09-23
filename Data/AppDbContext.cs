@@ -22,6 +22,10 @@ namespace YMI_PMT_PayrollManagement_API.Data
         public DbSet<CalendarMaster> CalendarMasters { get; set; }
         public DbSet<SalaryStructure> SalaryStructures { get; set; }
         public DbSet<SalaryStructureComponent> SalaryStructureComponents { get; set; }
+        public DbSet<SalaryFormula> SalaryFormulas { get; set; }
+
+        // NEW: result set of SP_GET_PAYROLL_EMPLOYEES (keyless, not a table)
+        public DbSet<PayrollEmployee> PayrollEmployees { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -41,6 +45,11 @@ namespace YMI_PMT_PayrollManagement_API.Data
             modelBuilder.Entity<SalaryStructureComponent>()
                 .Property(c => c.AmountOrPercentage)
                 .HasColumnType("decimal(18,2)");
+
+            // NEW: keyless entity mapped to the stored procedure result (no table / no migration)
+            modelBuilder.Entity<PayrollEmployee>()
+                .HasNoKey()
+                .ToView(null);
         }
     }
 }

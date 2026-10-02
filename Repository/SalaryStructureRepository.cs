@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using YMI_PMT_PayrollManagement_API.Data;
+using YMI_PMT_PayrollManagement_API.DTOs.SalaryStructure;
 using YMI_PMT_PayrollManagement_API.Interfaces.Repository;
 using YMI_PMT_PayrollManagement_API.Models;
 
@@ -175,6 +177,55 @@ namespace YMI_PMT_PayrollManagement_API.Repository
                 await tx.CommitAsync();
                 return true;
             });
+        }
+
+        public async Task<List<EmpCategoryDTO>> GetDistinctEmpCategoriesAsync()
+        {
+            var list = new List<EmpCategoryDTO>();
+
+            var conn = _context.Database.GetDbConnection();
+            if (conn.State != ConnectionState.Open)
+                await conn.OpenAsync();
+
+            await using var cmd = conn.CreateCommand();
+            cmd.CommandText = "sp_GetDistinctEmpCategories";
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            await using var reader = await cmd.ExecuteReaderAsync();
+            while (await reader.ReadAsync())
+            {
+                list.Add(new EmpCategoryDTO
+                {
+                    Code = reader["Code"]?.ToString()?.Trim() ?? string.Empty,
+                    Name = reader["Name"]?.ToString()?.Trim() ?? string.Empty
+                });
+            }
+
+            return list;
+        }
+        public async Task<List<EmpCategoryDTO>> GetDistinctSkillCategoriesAsync()
+        {
+            var list = new List<EmpCategoryDTO>();
+
+            var conn = _context.Database.GetDbConnection();
+            if (conn.State != System.Data.ConnectionState.Open)
+                await conn.OpenAsync();
+
+            await using var cmd = conn.CreateCommand();
+            cmd.CommandText = "sp_GetDistinctSkillCategories";
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+            await using var reader = await cmd.ExecuteReaderAsync();
+            while (await reader.ReadAsync())
+            {
+                list.Add(new EmpCategoryDTO
+                {
+                    Code = reader["Code"]?.ToString()?.Trim() ?? string.Empty,
+                    Name = reader["Name"]?.ToString()?.Trim() ?? string.Empty
+                });
+            }
+
+            return list;
         }
     }
 }

@@ -30,7 +30,7 @@ namespace YMI_PMT_PayrollManagement_API.Services
             try
             {
                 var user = await _userRepository.ValidateUserLoginAsync(
-                    request.Username!.Trim(),
+                    request.UserId!.Trim(),
                     request.Password!
                 );
 
@@ -56,14 +56,14 @@ namespace YMI_PMT_PayrollManagement_API.Services
                         Status = user.Status ?? "1"
                     };
 
-                    System.Diagnostics.Debug.WriteLine($"[AuthService] Login successful for {request.Username}");
+                    System.Diagnostics.Debug.WriteLine($"[AuthService] Login successful for {request.UserId}");
                 }
                 else
                 {
-                    bool userExists = await _userRepository.UserExistsAsync(request.Username!.Trim());
+                    bool userExists = await _userRepository.UserExistsAsync(request.UserId!.Trim());
 
                     response.Success = false;
-                    response.Message = userExists ? "Password incorrect" : "Username incorrect";
+                    response.Message = userExists ? "Password incorrect" : "User Id incorrect";
                     response.User = null;
 
                     System.Diagnostics.Debug.WriteLine($"[AuthService] Login failed - {response.Message}");
@@ -85,14 +85,14 @@ namespace YMI_PMT_PayrollManagement_API.Services
             if (request == null)
                 return (false, "Invalid request");
 
-            if (string.IsNullOrWhiteSpace(request.Username))
-                return (false, "Username is required");
+            if (string.IsNullOrWhiteSpace(request.UserId))
+                return (false, "User Id is required");
 
             if (string.IsNullOrWhiteSpace(request.Password))
                 return (false, "Password is required");
 
-            if (request.Username.Length < 3)
-                return (false, "Username must be at least 3 characters");
+            if (request.UserId.Length < 3)
+                return (false, "User Id must be at least 3 characters");
 
             if (request.Password.Length < 4)
                 return (false, "Password must be at least 4 characters");

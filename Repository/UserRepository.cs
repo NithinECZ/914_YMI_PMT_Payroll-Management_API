@@ -25,10 +25,10 @@ namespace YMI_PMT_PayrollManagement_API.Repository
             {
                 var users = await _context.UserMasters
                     .FromSqlInterpolated($@"
-        EXEC sp_ValidateUserLogin 
-            @UserId = {userId.Trim()},
-            @Password = {password}
-    ")
+                        EXEC sp_ValidateUserLogin 
+                            @UserId = {userId.Trim()},
+                            @Password = {password}
+                    ")
                     .AsNoTracking()
                     .ToListAsync();
 
@@ -90,7 +90,6 @@ namespace YMI_PMT_PayrollManagement_API.Repository
                     user.Password = newHashedPassword;
                     user.ModifiedOn = DateTime.Now;
                     user.ModifiedBy = "SYSTEM";
-
                     await _context.SaveChangesAsync();
 
                     System.Diagnostics.Debug.WriteLine($"[UpgradePasswordAsync] Password upgraded for UserId: {user.UserId}");

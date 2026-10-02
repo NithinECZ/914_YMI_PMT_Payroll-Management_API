@@ -11,28 +11,29 @@ namespace YMI_PMT_PayrollManagement_API.Models
         public int Id { get; set; }
 
         [Column("User_Id")]
-        public string UserId { get; set; } = string.Empty;  // Required field, never NULL
+        public string UserId { get; set; } = string.Empty;
 
         [Column("User_Nm")]
-        public string UserName { get; set; } = string.Empty;  // Required field, never NULL
+        public string UserName { get; set; } = string.Empty;
 
         [Column("Dept_Nm")]
-        public string? DepartmentName { get; set; }  // 👈 FIXED: Nullable (can be NULL in DB)
+        public string? DepartmentName { get; set; }
 
-        // MAKER | CHECKER | APPROVER | SUPER ADMIN
         [Column("User_Type")]
-        public string? UserType { get; set; }  // 👈 FIXED: Nullable (can be NULL in DB)
+        public string? UserType { get; set; }
 
-        // Stores combined "salt:hash" string (salt + hash together, colon separated)
-        // No separate salt column used - everything goes into this single column
         [Column("Pass_Wd")]
-        public string? Password { get; set; }  // 👈 FIXED: Nullable (can be NULL in DB)
+        public string? Password { get; set; }
 
-        [Column("Status")]  // 👈 ADDED: Explicit column mapping
-        public string? Status { get; set; }  // 👈 FIXED: Nullable (can be NULL in DB)
+        // NEW
+        [Column("Email_Id")]
+        public string? EmailId { get; set; }
+
+        [Column("Status")]
+        public string? Status { get; set; }
 
         [Column("User_St")]
-        public string? UserState { get; set; }  // 👈 FIXED: Nullable (can be NULL in DB)
+        public string? UserState { get; set; }
 
         [Column("Time_St")]
         public DateTime? TimeStamp { get; set; }
@@ -41,7 +42,7 @@ namespace YMI_PMT_PayrollManagement_API.Models
         public DateTime CreatedOn { get; set; }
 
         [Column("Crtd_By")]
-        public string? CreatedBy { get; set; }  // 👈 FIXED: Nullable (can be NULL in DB)
+        public string? CreatedBy { get; set; }
 
         [Column("Mdfd_On")]
         public DateTime? ModifiedOn { get; set; }

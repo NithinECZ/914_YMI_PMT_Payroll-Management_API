@@ -207,5 +207,13 @@ namespace YMI_PMT_PayrollManagement_API.Services
                 .ToList();
             return dto;
         }
+        public async Task<List<EmpCategoryDTO>> GetEmpCategoriesAsync()
+        {
+            return await _repository.GetDistinctEmpCategoriesAsync();
+        }
+        public async Task<List<EmpCategoryDTO>> GetSkillCategoriesAsync()
+        {
+            return await _repository.GetDistinctSkillCategoriesAsync();
+        }
     }
 }

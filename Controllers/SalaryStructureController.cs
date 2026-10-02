@@ -40,6 +40,41 @@ namespace YMI_PMT_PayrollManagement_API.Controllers
             }
         }
 
+        // ========== NEW ENDPOINT – Employee Categories from SP ==========
+        [HttpGet("emp-categories")]
+        public async Task<IActionResult> GetEmpCategories()
+        {
+            try
+            {
+                var result = await _service.GetEmpCategoriesAsync();
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "GetEmpCategories failed");
+                return StatusCode(500, new ApiErrorDTO
+                {
+                    Message = "Could not load employee categories: " + Root(ex)
+                });
+            }
+        }
+        [HttpGet("skill-categories")]
+        public async Task<IActionResult> GetSkillCategories()
+        {
+            try
+            {
+                var result = await _service.GetSkillCategoriesAsync();
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "GetSkillCategories failed");
+                return StatusCode(500, new ApiErrorDTO
+                {
+                    Message = "Could not load skill categories: " + Root(ex)
+                });
+            }
+        }
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetById(int id)
         {
@@ -48,7 +83,6 @@ namespace YMI_PMT_PayrollManagement_API.Controllers
                 var result = await _service.GetByIdAsync(id);
                 if (result == null)
                     return NotFound(new ApiErrorDTO { Message = "Salary Structure not found" });
-
                 return Ok(result);
             }
             catch (Exception ex)
@@ -66,17 +100,14 @@ namespace YMI_PMT_PayrollManagement_API.Controllers
         {
             if (dto == null)
                 return BadRequest(new ApiErrorDTO { Message = "Request body is empty" });
-
             try
             {
                 var (success, message, field, id) = await _service.CreateAsync(dto);
-
                 if (!success)
                 {
                     var status = field == "structureName" ? 409 : 400;
                     return StatusCode(status, new ApiErrorDTO { Message = message, Field = field });
                 }
-
                 return Ok(new { id, message });
             }
             catch (Exception ex)
@@ -91,11 +122,9 @@ namespace YMI_PMT_PayrollManagement_API.Controllers
         {
             if (dto == null)
                 return BadRequest(new ApiErrorDTO { Message = "Request body is empty" });
-
             try
             {
                 var (success, message, field) = await _service.UpdateAsync(id, dto);
-
                 if (!success)
                 {
                     var status = field == "structureName" ? 409
@@ -103,7 +132,6 @@ namespace YMI_PMT_PayrollManagement_API.Controllers
                                : 400;
                     return StatusCode(status, new ApiErrorDTO { Message = message, Field = field });
                 }
-
                 return Ok(new { message });
             }
             catch (Exception ex)
@@ -121,7 +149,6 @@ namespace YMI_PMT_PayrollManagement_API.Controllers
                 var (success, message) = await _service.DeleteAsync(id);
                 if (!success)
                     return NotFound(new ApiErrorDTO { Message = message });
-
                 return Ok(new { message });
             }
             catch (Exception ex)

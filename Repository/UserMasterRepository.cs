@@ -69,6 +69,7 @@ namespace YMI_PMT_PayrollManagement_API.Repository
             existing.UserName = user.UserName ?? existing.UserName;
             existing.DepartmentName = user.DepartmentName;
             existing.UserType = user.UserType;
+            existing.EmailId = user.EmailId;                    // NEW - Email Id
             existing.Status = user.Status ?? "1";
             existing.ModifiedOn = DateTime.Now;
             existing.ModifiedBy = user.ModifiedBy ?? "SYSTEM";
@@ -99,7 +100,7 @@ namespace YMI_PMT_PayrollManagement_API.Repository
                 .AnyAsync(u => u.UserId == userId && u.Id != excludeId);
         }
 
-        // 👇 NEW
+        // 👇 Privileges
         public async Task<List<UserPrivilege>> GetPrivilegesAsync(int userId)
         {
             return await _context.UserPrivileges

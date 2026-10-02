@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using YMI_PMT_PayrollManagement_API.Data;
 using YMI_PMT_PayrollManagement_API.Interfaces.Repository;
 using YMI_PMT_PayrollManagement_API.Interfaces.Services;
@@ -31,6 +31,12 @@ builder.Services.AddScoped<ICalendarMasterRepository, CalendarMasterRepository>(
 builder.Services.AddScoped<ISalaryStructureRepository, SalaryStructureRepository>();
 builder.Services.AddScoped<ISalaryFormulaRepository, SalaryFormulaRepository>();   // ← only once
 builder.Services.AddScoped<IPayrollEmployeeRepository, PayrollEmployeeRepository>();
+builder.Services.AddScoped<IPayrollApproverRepository, PayrollApproverRepository>();
+builder.Services.AddScoped<IPayslipRepository, PayslipRepository>();
+builder.Services.AddScoped<IPayrollReportRepository, PayrollReportRepository>();
+builder.Services.AddDbContext<SourceDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("SourceConnection")));
+builder.Services.AddScoped<IAttendanceManualSyncRepository, AttendanceManualSyncRepository>();
 
 
 // TIER 2: Service
@@ -43,6 +49,10 @@ builder.Services.AddScoped<ICalendarMasterService, CalendarMasterService>();
 builder.Services.AddScoped<ISalaryStructureService, SalaryStructureService>();
 builder.Services.AddScoped<ISalaryFormulaService, SalaryFormulaService>();       // ← THIS WAS MISSING
 builder.Services.AddScoped<IPayrollEmployeeService, PayrollEmployeeService>();
+builder.Services.AddScoped<IPayrollApproverService, PayrollApproverService>();
+builder.Services.AddScoped<IPayslipService, PayslipService>();
+builder.Services.AddScoped<IPayrollReportService, PayrollReportService>();
+builder.Services.AddScoped<IAttendanceManualSyncService, AttendanceManualSyncService>();
 
 builder.Services.AddCors(options =>
 {

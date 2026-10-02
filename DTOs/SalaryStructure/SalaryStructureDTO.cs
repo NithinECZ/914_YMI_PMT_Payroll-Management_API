@@ -50,4 +50,10 @@ namespace YMI_PMT_PayrollManagement_API.DTOs.SalaryStructure
         public string Message { get; set; } = string.Empty;
         public string? Field { get; set; }
     }
+    public class EmpCategoryDTO
+    {
+        public string Code { get; set; } = string.Empty;
+        public string Name { get; set; } = string.Empty;
+    }
+
 }

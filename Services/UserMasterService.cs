@@ -43,6 +43,10 @@ namespace YMI_PMT_PayrollManagement_API.Services
             if (string.IsNullOrWhiteSpace(dto.Password))
                 return (false, "Password is required", 0);
 
+            // Email validation (optional but recommended)
+            if (!string.IsNullOrWhiteSpace(dto.EmailId) && !IsValidEmail(dto.EmailId))
+                return (false, "Invalid Email Id", 0);
+
             string hashedPassword = PasswordHasher.HashPassword(dto.Password);
 
             var entity = new UserMaster
@@ -51,6 +55,7 @@ namespace YMI_PMT_PayrollManagement_API.Services
                 UserName = dto.UserName.Trim(),
                 DepartmentName = string.IsNullOrWhiteSpace(dto.DepartmentName) ? null : dto.DepartmentName.Trim(),
                 UserType = string.IsNullOrWhiteSpace(dto.UserType) ? null : dto.UserType.Trim(),
+                EmailId = string.IsNullOrWhiteSpace(dto.EmailId) ? null : dto.EmailId.Trim(),   // NEW
                 Password = hashedPassword,
                 Status = dto.IsActive ? "1" : "0",
                 CreatedOn = DateTime.Now,
@@ -65,6 +70,10 @@ namespace YMI_PMT_PayrollManagement_API.Services
         {
             if (await _repository.UserIdExistsAsync(dto.UserId, id))
                 return (false, "User Id already exists");
+
+            // Email validation
+            if (!string.IsNullOrWhiteSpace(dto.EmailId) && !IsValidEmail(dto.EmailId))
+                return (false, "Invalid Email Id");
 
             bool updatePassword = !string.IsNullOrWhiteSpace(dto.Password);
             string? hashedPassword = null;
@@ -81,6 +90,7 @@ namespace YMI_PMT_PayrollManagement_API.Services
                 UserName = dto.UserName.Trim(),
                 DepartmentName = string.IsNullOrWhiteSpace(dto.DepartmentName) ? null : dto.DepartmentName.Trim(),
                 UserType = string.IsNullOrWhiteSpace(dto.UserType) ? null : dto.UserType.Trim(),
+                EmailId = string.IsNullOrWhiteSpace(dto.EmailId) ? null : dto.EmailId.Trim(),   // NEW
                 Password = hashedPassword,
                 Status = dto.IsActive ? "1" : "0",
                 ModifiedBy = string.IsNullOrWhiteSpace(dto.ModifiedBy) ? "SYSTEM" : dto.ModifiedBy,
@@ -96,7 +106,7 @@ namespace YMI_PMT_PayrollManagement_API.Services
             return result ? (true, "Deleted Successfully") : (false, "User not found");
         }
 
-        // 👇 NEW
+        // 👇 Privileges
         public async Task<List<UserPrivilegeDTO>> GetPrivilegesAsync(int userId)
         {
             var list = await _repository.GetPrivilegesAsync(userId);
@@ -141,7 +151,22 @@ namespace YMI_PMT_PayrollManagement_API.Services
             UserName = u.UserName ?? string.Empty,
             DepartmentName = u.DepartmentName ?? string.Empty,
             UserType = u.UserType ?? string.Empty,
+            EmailId = u.EmailId ?? string.Empty,          // NEW
             Status = u.Status ?? string.Empty,
         };
+
+        // Helper method for email validation
+        private static bool IsValidEmail(string email)
+        {
+            try
+            {
+                var addr = new System.Net.Mail.MailAddress(email);
+                return addr.Address == email;
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 }

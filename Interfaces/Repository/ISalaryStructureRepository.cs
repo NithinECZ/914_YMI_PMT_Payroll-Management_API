@@ -1,4 +1,5 @@
-﻿using YMI_PMT_PayrollManagement_API.Models;
+﻿using YMI_PMT_PayrollManagement_API.DTOs.SalaryStructure;
+using YMI_PMT_PayrollManagement_API.Models;
 
 namespace YMI_PMT_PayrollManagement_API.Interfaces.Repository
 {
@@ -17,5 +18,7 @@ namespace YMI_PMT_PayrollManagement_API.Interfaces.Repository
         Task<bool> StructureNameExistsAsync(string structureName, int excludeId = 0);
 
         Task<bool> ExistsAsync(int id);
+        Task<List<EmpCategoryDTO>> GetDistinctEmpCategoriesAsync();
+        Task<List<EmpCategoryDTO>> GetDistinctSkillCategoriesAsync();
     }
 }

@@ -2,7 +2,7 @@
 {
     public class LoginRequestDTO
     {
-        public string Username { get; set; } = string.Empty;
+        public string UserId { get; set; } = string.Empty;   // Changed from Username
         public string Password { get; set; } = string.Empty;
     }
 }
